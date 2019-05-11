@@ -1,0 +1,40 @@
+language: node_js
+node_js:
+  - "10"
+cache:
+  directories:
+    - node_modules
+jobs:
+  include:
+    - stage: webapp build
+      before_script: 
+        - cd WebApp
+      script:
+        - npm install
+        - unset CI
+        - npm run build
+    - stage: build docker webapp image
+      before_script: 
+        - cd WebApp
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t qa_webapp .
+        - docker images
+        - docker tag qa_webapp $DOCKER_USERNAME/qa-dashboard-webapp
+        - docker push $DOCKER_USERNAME/qa-dashboard-webapp
+      after_script:
+        - cd ..
+    - stage: build docker api image
+      before_script: 
+        - cd API
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t qa_webapp .
+        - docker images
+        - docker tag qa_webapp $DOCKER_USERNAME/qa-dashboard-api
+        - docker push $DOCKER_USERNAME/qa-dashboard-api
+      after_script:
+        - cd ..
+on:
+  branch: master
+

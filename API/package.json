@@ -1,0 +1,28 @@
+{
+  "name": "api-qa-dashboard",
+  "version": "1.0.0",
+  "description": "backend of QA dashboard app",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "build": "pkg server.js"
+  },
+  "author": "Fran Pastor",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Franpastoragusti/QA-Dasboard.git"
+  },
+  "devDependencies": {
+    "nodemon": "^1.15.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.2",
+    "helmet": "^3.15.0",
+    "mongoose": "^5.5.7"
+  }
+}
