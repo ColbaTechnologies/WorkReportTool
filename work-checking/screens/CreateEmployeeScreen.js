@@ -47,7 +47,6 @@ export class CreateEmployeeScreen extends React.Component {
     const companyId = this.props.navigation.getParam("companyId", null);
     const isAdmin = this.props.navigation.getParam("isAdmin", false);
     let data = { ...this.state.data, ...{ companyId, isAdmin } };
-    console.log(data);
     this.setState({ data: data });
   }
   onChangeText = (text, input) => {

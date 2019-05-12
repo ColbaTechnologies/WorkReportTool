@@ -1,40 +1,43 @@
 import React, { Component } from "react";
+import { Content, Text, Icon } from "native-base";
 import { StyleSheet, Dimensions } from "react-native";
-import { Container, Content, Text, Button } from "native-base";
 
 const { width, height } = Dimensions.get("window");
 
 export class SuccessScreen extends Component {
-  static navigationOptions = {
-    title: "Please sign in"
-  };
-  constructor() {
-    super();
-    this.state = {
-      isReady: false
-    };
+  constructor(props) {
+    super(props);
   }
-  componentDidMount() {
-    const targetScreen = this.props.navigation.getParam("targetScreen", null);
+
+  componentWillMount() {
     setTimeout(() => {
-      this.props.navigation.navigate(targetScreen);
-    }, 3000);
+      this.props.navigation.navigate("Decision");
+    }, 2000);
   }
+
+  static navigationOptions = ({ navigation }) => ({
+    header: null
+  });
 
   render() {
     return (
-      <Container>
-        <Content
-          contentContainerStyle={{
-            display: "flex",
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <Text>Success</Text>
-        </Content>
-      </Container>
+      <Content style={styles.root}>
+        <Icon style={styles.checkIcon} name="md-checkmark-circle-outline" />
+      </Content>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  root: {
+    height,
+    backgroundColor: "#388E3C"
+  },
+  checkIcon: {
+    alignSelf: "center",
+    marginTop: 150,
+    color: "#C8E6C9",
+    fontSize: 200,
+    fontWeight: "100"
+  }
+});

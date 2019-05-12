@@ -1,5 +1,5 @@
 "use strict";
-
+const moment = require("moment");
 const mongoose = require("mongoose"),
   Record = mongoose.model("Record");
 
@@ -8,6 +8,25 @@ exports.get_record_by_employee_id = (req, res) => {
     if (err) res.send(err);
     res.json(record);
   });
+};
+
+exports.get_records_today = (req, res) => {
+  const today = moment().startOf("day");
+  Record.find(
+    {
+      employeeId: req.params._id,
+      createdAt: {
+        $gte: today.toDate(),
+        $lte: moment(today)
+          .endOf("day")
+          .toDate()
+      }
+    },
+    function(err, record) {
+      if (err) res.send(err);
+      res.json(record);
+    }
+  );
 };
 
 exports.get_active_record_of_employee = (req, res) => {

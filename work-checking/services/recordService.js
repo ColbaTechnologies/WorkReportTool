@@ -30,11 +30,27 @@ function stop(id) {
   });
 }
 
+function getEmployeeRecords(id) {
+  return DataSource({
+    url: `/record/employee/${id}`,
+    method: "GET"
+  });
+}
+
+function getEmployeeTodayRecords(id) {
+  return DataSource({
+    url: `/record/employee/today/${id}`,
+    method: "GET"
+  });
+}
+
 const RecordService = {
   createNew,
   getById,
   getCurrent,
-  stop
+  stop,
+  getEmployeeRecords,
+  getEmployeeTodayRecords
 };
 
 export default RecordService;

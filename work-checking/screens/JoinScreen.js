@@ -43,7 +43,6 @@ export class JoinScreen extends React.Component {
       this.setState({ errors: emptyInputs });
     } else {
       CompanyService.getByCode(this.state.data.code).then(company => {
-        console.log(company);
         this.props.navigation.navigate("NewEmployee", {
           companyId: company[0]._id
         });

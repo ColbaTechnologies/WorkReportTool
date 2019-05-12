@@ -19,6 +19,8 @@ module.exports = function(app) {
     .route("/record/pending/company/:_id")
     .get(record.get_pending_records_by_company_id);
   app.route("/record/employee/:_id").get(record.get_record_by_employee_id);
+  app.route("/record/employee/today/:_id").get(record.get_records_today);
+
   app.route("/record/running/:_id").get(record.get_active_record_of_employee);
 
   app.route("/record/stop/:_id").put(record.stop_record);

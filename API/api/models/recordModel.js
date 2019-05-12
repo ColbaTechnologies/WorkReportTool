@@ -7,8 +7,8 @@ const RecordSchema = new Schema({
   employeeName: String,
   running: Boolean,
   companyId: String,
-  createdAt: String,
-  stoppedAt: String,
+  createdAt: Date,
+  stoppedAt: Date,
   status: { type: String, enum: ["accepted", "cancelled", "pending"] }
 });
 
