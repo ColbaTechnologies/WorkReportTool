@@ -65,7 +65,9 @@ export class CreateEmployeeScreen extends React.Component {
       this.setState({ errors: emptyInputs });
     } else {
       EmployeeService.createNew(this.state.data).then(() => {
-        this.props.navigation.navigate("Decision");
+        this.props.navigation.navigate("Success", {
+          targetScreen: "Decision"
+        });
       });
     }
   };

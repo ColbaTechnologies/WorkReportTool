@@ -6,30 +6,35 @@ import DataSource from "./dataSource";
 
 function createNew(data) {
   return DataSource({
-    url: "/company",
+    url: "/record",
     method: "POST",
     data: data
   });
 }
-
 function getById(id) {
   return DataSource({
-    url: `/company/${id}`,
+    url: `/record/${id}`,
     method: "GET"
   });
 }
-
-function getByCode(code) {
+function getCurrent(workerId) {
   return DataSource({
-    url: `/company/code/${code}`,
+    url: `/record/running/${workerId}`,
     method: "GET"
   });
 }
+function stop(id) {
+  return DataSource({
+    url: `/record/stop/${id}`,
+    method: "PUT"
+  });
+}
 
-const CompanyService = {
+const RecordService = {
   createNew,
-  getByCode,
-  getById
+  getById,
+  getCurrent,
+  stop
 };
 
-export default CompanyService;
+export default RecordService;

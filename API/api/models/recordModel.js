@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const RecordSchema = new Schema({
   employeeId: String,
   employeeName: String,
+  running: Boolean,
   companyId: String,
   createdAt: String,
   stoppedAt: String,

@@ -10,6 +10,16 @@ exports.get_record_by_employee_id = (req, res) => {
   });
 };
 
+exports.get_active_record_of_employee = (req, res) => {
+  Record.find({ employeeId: req.params._id, running: true }, function(
+    err,
+    record
+  ) {
+    if (err) res.send(err);
+    res.json(record);
+  });
+};
+
 exports.get_pending_records_by_company_id = (req, res) => {
   Record.find({ companyId: req.params._id, status: "pending" }, function(
     err,
@@ -24,6 +34,7 @@ exports.create_record = (req, res) => {
   let new_Record = new Record(req.body);
   new_Record.status = "pending";
   new_Record.createdAt = new Date();
+  new_Record.running = true;
   new_Record.save((err, record) => {
     if (err) res.send(err);
     res.json(record);
@@ -31,11 +42,9 @@ exports.create_record = (req, res) => {
 };
 
 exports.stop_record = (req, res) => {
-  let recordToUpdate = req.body;
-  recordToUpdate.stoppedAt = new Date();
   Record.findOneAndUpdate(
     { _id: req.params._id },
-    recordToUpdate,
+    { $set: { stoppedAt: new Date(), running: false } },
     { new: true },
     (err, record) => {
       if (err) res.send(err);
