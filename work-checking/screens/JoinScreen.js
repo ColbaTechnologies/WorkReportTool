@@ -1,7 +1,9 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-
 import CompanyService from "../services/companyService";
+import { PAGES, COLORS, JOIN_INPUTS } from "../constants";
+import { validate } from "../helpers/helpers";
+
 import {
   Container,
   Header,
@@ -16,13 +18,6 @@ import {
 } from "native-base";
 const width = Dimensions.get("window").width;
 
-const inputs2 = [
-  {
-    name: "code",
-    placeHolder: "Company Code"
-  }
-];
-
 export class JoinScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -30,24 +25,21 @@ export class JoinScreen extends React.Component {
   }
   onChangeText = (text, input) => {
     let data = { ...this.state.data, ...{ [input]: text } };
+    let errors = this.state.errors.filter(error => error !== input);
     this.setState({ data });
   };
 
   onSubmit = () => {
-    let emptyInputs = Object.keys(this.state.data).filter(key => {
-      if (this.state.data[key] === "") {
-        return key;
-      }
-    });
-    if (emptyInputs.length !== 0) {
-      this.setState({ errors: emptyInputs });
-    } else {
+    const callback = () =>
       CompanyService.getByCode(this.state.data.code).then(company => {
-        this.props.navigation.navigate("NewEmployee", {
+        this.props.navigation.navigate(PAGES.newEmployee, {
           companyId: company[0]._id
         });
       });
-    }
+    const fallback = errors => {
+      this.setState({ errors });
+    };
+    validate(this.state.data, callback, fallback);
   };
 
   render() {
@@ -61,7 +53,7 @@ export class JoinScreen extends React.Component {
           }}
         >
           <Form>
-            {inputs2.map(input => {
+            {JOIN_INPUTS.map(input => {
               let hasError = this.state.errors.includes(input.name);
               return (
                 <Item
@@ -85,7 +77,8 @@ export class JoinScreen extends React.Component {
               height: 80,
               position: "absolute",
               bottom: 0,
-              width: width
+              width: width,
+              backgroundColor: COLORS.lightGreen
             }}
             onPress={() => this.onSubmit()}
           >

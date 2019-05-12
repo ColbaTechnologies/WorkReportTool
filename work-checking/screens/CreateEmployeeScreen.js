@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import CompanyService from "../services/companyService";
 import EmployeeService from "../services/employeeService";
+import { validate } from "../helpers/helpers";
+import { PAGES, NEW_EMPLOYEE_INPUTS, COLORS } from "../constants";
 import {
   Container,
   Header,
@@ -15,25 +17,6 @@ import {
   Input
 } from "native-base";
 const width = Dimensions.get("window").width;
-
-const inputs = [
-  {
-    name: "name",
-    placeHolder: "Name"
-  },
-  {
-    name: "surname",
-    placeHolder: "Surname"
-  },
-  {
-    name: "nif",
-    placeHolder: "NIF"
-  },
-  {
-    name: "nass",
-    placeHolder: "NASS"
-  }
-];
 
 export class CreateEmployeeScreen extends React.Component {
   constructor(props) {
@@ -51,24 +34,21 @@ export class CreateEmployeeScreen extends React.Component {
   }
   onChangeText = (text, input) => {
     let data = { ...this.state.data, ...{ [input]: text } };
-    this.setState({ data });
+    let errors = this.state.errors.filter(error => error !== input);
+    this.setState({ data, errors });
   };
 
   onSubmit = () => {
-    let emptyInputs = Object.keys(this.state.data).filter(key => {
-      if (this.state.data[key] === "") {
-        return key;
-      }
-    });
-    if (emptyInputs.length !== 0) {
-      this.setState({ errors: emptyInputs });
-    } else {
+    const callback = () =>
       EmployeeService.createNew(this.state.data).then(() => {
-        this.props.navigation.navigate("Success", {
-          targetScreen: "Decision"
+        this.props.navigation.navigate(PAGES.success, {
+          targetScreen: PAGES.decision
         });
       });
-    }
+    const fallback = errors => {
+      this.setState({ errors });
+    };
+    validate(this.state.data, callback, fallback);
   };
 
   render() {
@@ -81,7 +61,7 @@ export class CreateEmployeeScreen extends React.Component {
           }}
         >
           <Form>
-            {inputs.map(input => {
+            {NEW_EMPLOYEE_INPUTS.map(input => {
               let hasError = this.state.errors.includes(input.name);
               return (
                 <Item key={input.name} error={hasError}>
@@ -101,7 +81,8 @@ export class CreateEmployeeScreen extends React.Component {
               height: 80,
               position: "absolute",
               bottom: 0,
-              width: width
+              width: width,
+              backgroundColor: COLORS.lightGreen
             }}
             onPress={() => this.onSubmit()}
           >

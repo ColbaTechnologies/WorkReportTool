@@ -5,45 +5,49 @@ import { CreateCompanyScreen } from "../screens/CreateCompanyScreen";
 import { JoinScreen } from "../screens/JoinScreen";
 import { CreateEmployeeScreen } from "../screens/CreateEmployeeScreen";
 import { SuccessScreen } from "../screens/SuccessScreen";
+import { COLORS } from "../constants";
 
+const navigationOptions = {
+  headerStyle: {
+    backgroundColor: COLORS.darkGreen
+  },
+  headerTintColor: COLORS.light,
+  headerTitleStyle: {
+    fontWeight: "bold"
+  }
+};
 export const SetupNavigation = createAppContainer(
   createStackNavigator({
     Decision: {
       screen: DecisionScreen,
       navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
         title: "Work Check-in"
       })
     },
     NewCompany: {
       screen: CreateCompanyScreen,
       navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
         title: "Create Company"
       })
     },
     NewEmployee: {
       screen: CreateEmployeeScreen,
       navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
         title: "Create Profile"
       })
     },
     Success: {
       screen: SuccessScreen
     },
-    Join: { screen: JoinScreen }
-  })
-);
-
-export const AppNavigation = createAppContainer(
-  createStackNavigator({
-    Home: {
-      screen: DecisionScreen,
+    Join: {
+      screen: JoinScreen,
       navigationOptions: ({ navigation }) => ({
-        title: "Work Check-in"
+        ...navigationOptions,
+        title: "Join on a company"
       })
-    },
-    Success: {
-      screen: SuccessScreen
-    },
-    Join: { screen: JoinScreen }
+    }
   })
 );

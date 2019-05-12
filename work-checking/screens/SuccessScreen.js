@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Content, Text, Icon } from "native-base";
+import { Content, Text, Icon, Container } from "native-base";
 import { StyleSheet, Dimensions } from "react-native";
+import { PAGES, COLORS } from "../constants";
 
 const { width, height } = Dimensions.get("window");
 
@@ -11,8 +12,8 @@ export class SuccessScreen extends Component {
 
   componentWillMount() {
     setTimeout(() => {
-      this.props.navigation.navigate("Decision");
-    }, 2000);
+      this.props.navigation.navigate(PAGES.decision);
+    }, 1500);
   }
 
   static navigationOptions = ({ navigation }) => ({
@@ -21,22 +22,25 @@ export class SuccessScreen extends Component {
 
   render() {
     return (
-      <Content style={styles.root}>
-        <Icon style={styles.checkIcon} name="md-checkmark-circle-outline" />
-      </Content>
+      <Container>
+        <Content
+          contentContainerStyle={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "center"
+          }}
+        >
+          <Icon style={styles.checkIcon} name="checkmark" />
+        </Content>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  root: {
-    height,
-    backgroundColor: "#388E3C"
-  },
   checkIcon: {
     alignSelf: "center",
-    marginTop: 150,
-    color: "#C8E6C9",
+    color: COLORS.lightGreen,
     fontSize: 200,
     fontWeight: "100"
   }

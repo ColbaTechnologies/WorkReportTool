@@ -1,23 +1,11 @@
 import React from "react";
 import { Dimensions } from "react-native";
-import { Container, Header, Content, Button, Icon, Text } from "native-base";
+import { Container, Header, Content } from "native-base";
+import { NavigationButton } from "../components/NavigationButton";
+import { getButtons } from "../helpers/helpers";
+import { PAGES } from "../constants";
 const width = Dimensions.get("window").width;
-const buttons = [
-  {
-    icon: "home",
-    text: "Create a company",
-    color: "primary",
-    id: 0,
-    targetPage: "NewCompany"
-  },
-  {
-    icon: "people",
-    text: "Join on a company",
-    color: "info",
-    id: 1,
-    targetPage: "Join"
-  }
-];
+let buttons = getButtons(PAGES.decision);
 
 export const DecisionScreen = props => {
   return (
@@ -31,23 +19,14 @@ export const DecisionScreen = props => {
         }}
       >
         {buttons.map(button => (
-          <Button
+          <NavigationButton
             key={button.id}
-            block
-            iconLeft
-            info={button.color === "info"}
-            primary={button.color === "primary"}
+            {...button}
             style={{
-              height: 80,
               marginBottom: 20
             }}
-            onPress={() => {
-              props.navigation.navigate(button.targetPage);
-            }}
-          >
-            <Icon name={`${button.icon}`} />
-            <Text>{button.text}</Text>
-          </Button>
+            navigation={props.navigation}
+          />
         ))}
       </Content>
     </Container>

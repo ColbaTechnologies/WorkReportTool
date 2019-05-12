@@ -7,7 +7,7 @@ const helmet = require("helmet");
 
 const express = require("express"),
   app = express(),
-  port = process.env.QA_API_PORT || process.env.PORT || 5000,
+  port = process.env.API_PORT || process.env.PORT || 5000,
   mongoose = require("mongoose"),
   Company = require("./api/models/companyModel"),
   Employee = require("./api/models/employeeModel"),
@@ -16,7 +16,7 @@ const express = require("express"),
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.QA_API_DB_URL, { useNewUrlParser: true });
+mongoose.connect(process.env.API_DB_URL, { useNewUrlParser: true });
 
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
