@@ -35,6 +35,7 @@ export class HomeScreen extends Component {
     this.props.navigation.se;
   }
   componentDidMount() {
+    console.log(process.env);
     const { employeeId } = this.props.screenProps;
     RecordService.getCurrent(employeeId)
       .then(records => {

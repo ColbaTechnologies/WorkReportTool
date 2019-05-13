@@ -1,10 +1,12 @@
 import axios from "axios";
+import { API_URL } from "react-native-dotenv";
+
 /* eslint-disable */
 /**
  * Create an Axios Client with defaults
  */
 const client = axios.create({
-  baseURL: "http://192.168.0.18:5000"
+  baseURL: API_URL
 });
 
 axios.defaults.headers.common["Accept"] = "application/json";

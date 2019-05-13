@@ -8,8 +8,8 @@ export default class App extends Component {
     super();
     this.state = {
       isReady: false,
-      companyID: "5cd74f8f6e234ebef0d47bb0",
-      workerId: "5cd75036bd723bbf9aecb28c"
+      companyID: "",
+      workerId: ""
     };
   }
   async componentWillMount() {

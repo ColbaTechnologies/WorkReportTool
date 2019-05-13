@@ -9,12 +9,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^32.0.0",
-    "lottie-react-native": "^2.6.1",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-native-countdown-component": "^2.4.0",
+    "react-native-dotenv": "^0.2.0",
     "react-navigation": "^3.9.1"
   },
   "devDependencies": {
