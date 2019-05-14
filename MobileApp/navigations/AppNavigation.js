@@ -3,7 +3,7 @@ import { COLORS } from "../constants";
 import { HomeScreen } from "../screens/HomeScreen";
 import { TodayScreen } from "../screens/TodayScreen";
 import { RecordsScreen } from "../screens/RecordsScreen";
-
+import { ValidateScreen } from "../screens/ValidateScreen";
 const navigationOptions = {
   headerStyle: {
     backgroundColor: COLORS.darkGreen
@@ -35,6 +35,13 @@ export const AppNavigation = createAppContainer(
       navigationOptions: ({ navigation }) => ({
         ...navigationOptions,
         title: "Records"
+      })
+    },
+    Validate: {
+      screen: ValidateScreen,
+      navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
+        title: "Validate Records"
       })
     }
   })

@@ -68,7 +68,7 @@ export class CreateCompanyScreen extends React.Component {
           <Button
             block
             style={{
-              height: 80,
+              height: 60,
               position: "absolute",
               bottom: 0,
               width: width,

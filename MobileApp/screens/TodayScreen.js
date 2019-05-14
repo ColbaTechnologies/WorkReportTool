@@ -42,6 +42,7 @@ export class TodayScreen extends React.Component {
     RecordService.getEmployeeTodayRecords(employeeId)
       .then(records => {
         records = prepareRecords(records);
+        console.log(records);
         this.setState({ records });
       })
       .catch(e => console.log(e));

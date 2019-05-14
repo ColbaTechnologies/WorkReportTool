@@ -97,11 +97,7 @@ export class HomeScreen extends Component {
     }
     let buttons = [];
     if (this.state.employee) {
-      buttons = getButtons(
-        PAGES.home,
-        this.state.employee.isAdmin,
-        this.state.employee._id
-      );
+      buttons = getButtons(PAGES.home, this.state.employee);
     }
     return (
       <Container>

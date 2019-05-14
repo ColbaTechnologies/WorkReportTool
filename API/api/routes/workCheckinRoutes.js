@@ -24,5 +24,5 @@ module.exports = function(app) {
   app.route("/record/running/:_id").get(record.get_active_record_of_employee);
 
   app.route("/record/stop/:_id").put(record.stop_record);
-  app.route("/record/validate/").put(record.validate_records);
+  app.route("/record/validate").put(record.validate_records);
 };

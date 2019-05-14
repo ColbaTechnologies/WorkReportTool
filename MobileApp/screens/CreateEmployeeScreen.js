@@ -78,7 +78,7 @@ export class CreateEmployeeScreen extends React.Component {
             block
             success
             style={{
-              height: 80,
+              height: 60,
               position: "absolute",
               bottom: 0,
               width: width,
