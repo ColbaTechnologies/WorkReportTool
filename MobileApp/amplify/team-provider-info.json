@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "workcheckin-dev-20190514195859-authRole",
+            "UnauthRoleArn": "arn:aws:iam::028791098429:role/workcheckin-dev-20190514195859-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::028791098429:role/workcheckin-dev-20190514195859-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "workcheckin-dev-20190514195859-deployment",
+            "UnauthRoleName": "workcheckin-dev-20190514195859-unauthRole",
+            "StackName": "workcheckin-dev-20190514195859",
+            "StackId": "arn:aws:cloudformation:eu-central-1:028791098429:stack/workcheckin-dev-20190514195859/f3468d60-7671-11e9-9ba0-0a62f85f92f4"
+        },
+        "categories": {
+            "auth": {
+                "cognitoabfcc225": {}
+            }
+        }
+    }
+}

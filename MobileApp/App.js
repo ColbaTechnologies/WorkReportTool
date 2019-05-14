@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SplashScreen from "./screens/SplashScreen";
-import { AppNavigation } from "./navigations/AppNavigation";
+import AppNavigationAuth from "./navigations/AppNavigation";
 import { SetupNavigation } from "./navigations/SetupNavigation";
 
 export default class App extends Component {
@@ -30,7 +30,7 @@ export default class App extends Component {
       return <SplashScreen />;
     }
     if (this.state.companyID && this.state.workerId) {
-      return <AppNavigation screenProps={screenProps} />;
+      return <AppNavigationAuth screenProps={screenProps} />;
     }
     return <SetupNavigation />;
   }
