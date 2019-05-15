@@ -44,13 +44,30 @@ function getEmployeeTodayRecords(id) {
   });
 }
 
+function getPendingRecordsByCompany(id) {
+  return DataSource({
+    url: `/record/pending/company/${id}`,
+    method: "GET"
+  });
+}
+
+function validatePending(data) {
+  return DataSource({
+    url: `/record/validate`,
+    method: "PUT",
+    data: data
+  });
+}
+
 const RecordService = {
   createNew,
   getById,
   getCurrent,
   stop,
   getEmployeeRecords,
-  getEmployeeTodayRecords
+  getEmployeeTodayRecords,
+  getPendingRecordsByCompany,
+  validatePending
 };
 
 export default RecordService;

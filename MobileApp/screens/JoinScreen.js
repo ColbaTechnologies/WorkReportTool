@@ -32,6 +32,7 @@ export class JoinScreen extends React.Component {
   onSubmit = () => {
     const callback = () =>
       CompanyService.getByCode(this.state.data.code).then(company => {
+        this.props.screenProps.setCompanyId(company[0]._id);
         this.props.navigation.navigate(PAGES.newEmployee, {
           companyId: company[0]._id
         });

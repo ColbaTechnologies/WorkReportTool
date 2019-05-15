@@ -8,7 +8,8 @@ const EmployeeSchema = new Schema({
   nif: String,
   nass: String,
   companyId: String,
-  isAdmin: Boolean
+  isAdmin: Boolean,
+  username: String
 });
 
 module.exports = mongoose.model("Employee", EmployeeSchema);

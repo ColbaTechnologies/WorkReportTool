@@ -6,10 +6,12 @@ export const PAGES = {
   join: "Join",
   home: "Home",
   today: "Today",
-  records: "Records"
+  records: "Records",
+  validate: "Validate"
 };
 
 export const COLORS = {
+  white: "#FFFFFF",
   light: "#D3D0CB",
   lightBlue: "#9FB1BC",
   orange: "#DD6E42",

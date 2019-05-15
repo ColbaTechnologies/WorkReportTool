@@ -11,16 +11,17 @@ function createNew(data) {
     data: data
   });
 }
-function getById(id) {
+
+function getByUserName(username) {
   return DataSource({
-    url: `/employee/${id}`,
+    url: `/employee/${username}`,
     method: "GET"
   });
 }
 
 const EmployeeService = {
   createNew,
-  getById
+  getByUserName
 };
 
 export default EmployeeService;

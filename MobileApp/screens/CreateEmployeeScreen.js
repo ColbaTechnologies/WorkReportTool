@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
+import { Auth } from "aws-amplify";
 import CompanyService from "../services/companyService";
 import EmployeeService from "../services/employeeService";
 import { validate } from "../helpers/helpers";
@@ -22,14 +23,19 @@ export class CreateEmployeeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: { name: "", surname: "", nif: "", nass: "" },
+      data: { name: "", surname: "", nif: "", nass: "", username: "" },
       errors: []
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     const companyId = this.props.navigation.getParam("companyId", null);
     const isAdmin = this.props.navigation.getParam("isAdmin", false);
-    let data = { ...this.state.data, ...{ companyId, isAdmin } };
+    await (await Auth.currentCredentials()).getPromise(); // Wait for credentials
+    const info = await Auth.currentUserInfo();
+    let data = {
+      ...this.state.data,
+      ...{ companyId, isAdmin, username: info.username }
+    };
     this.setState({ data: data });
   }
   onChangeText = (text, input) => {
@@ -40,10 +46,9 @@ export class CreateEmployeeScreen extends React.Component {
 
   onSubmit = () => {
     const callback = () =>
-      EmployeeService.createNew(this.state.data).then(() => {
-        this.props.navigation.navigate(PAGES.success, {
-          targetScreen: PAGES.decision
-        });
+      EmployeeService.createNew(this.state.data).then(result => {
+        this.props.screenProps.setWorkerId(result);
+        this.props.navigation.navigate(PAGES.home);
       });
     const fallback = errors => {
       this.setState({ errors });
@@ -78,7 +83,7 @@ export class CreateEmployeeScreen extends React.Component {
             block
             success
             style={{
-              height: 80,
+              height: 60,
               position: "absolute",
               bottom: 0,
               width: width,

@@ -61,7 +61,50 @@ const groupBy = (xs, key) => {
   }, {});
 };
 
-export const getButtons = (screen, isAdmin = null, id = null) => {
+export const prepareRecordsForValidate = records => {
+  let finalArray = [];
+  records = records.map(record => {
+    let created = moment(record.createdAt);
+    let stopped = moment(record.stoppedAt);
+    record.cDate = created.format("DD/MM/YY");
+    record.difference = getDiffTime(created, stopped);
+    return record;
+  });
+
+  let recordsGrouped = groupBy(records, "employeeId");
+  Object.keys(recordsGrouped).forEach(employee => {
+    recordsGrouped[employee] = groupBy(recordsGrouped[employee], "cDate");
+    Object.keys(recordsGrouped[employee]).map(day => {
+      let firstRegister = recordsGrouped[employee][day][0];
+      let latestRegister = recordsGrouped[employee][day].reverse()[0];
+      let total = 0;
+
+      let totalToSend = 0;
+      recordsGrouped[employee][day].map(item => {
+        total += moment.duration(item.difference).asSeconds();
+      });
+      total = moment(total)
+        .startOf("day")
+        .seconds(total)
+        .format("HH:mm:ss");
+
+      let data = {
+        day,
+        firstRegister,
+        employeeId: employee,
+        employeeName: firstRegister.employeeName,
+        start: moment(firstRegister.createdAt).format("HH:mm:ss"),
+        end: moment(latestRegister.stoppedAt).format("HH:mm:ss"),
+        total
+      };
+      finalArray.push(data);
+    });
+  });
+  finalArray = groupBy(finalArray, "day");
+  return finalArray;
+};
+
+export const getButtons = (screen, employee = null) => {
   let buttons = [];
   if (screen === PAGES.home) {
     buttons.push(
@@ -71,7 +114,7 @@ export const getButtons = (screen, isAdmin = null, id = null) => {
         color: COLORS.darkBlue,
         id: 0,
         targetPage: PAGES.today,
-        params: { employeeId: id }
+        params: { employeeId: employee._id }
       },
       {
         icon: "document",
@@ -79,16 +122,17 @@ export const getButtons = (screen, isAdmin = null, id = null) => {
         color: COLORS.lightGreen,
         id: 1,
         targetPage: PAGES.records,
-        params: { employeeId: id }
+        params: { employeeId: employee._id }
       }
     );
-    if (isAdmin) {
+    if (employee.isAdmin) {
       buttons.push({
         icon: "checkmark",
         text: "Verify Records",
         color: COLORS.lightBlue,
+        params: { companyId: employee.companyId },
         id: 2,
-        targetPage: PAGES.join
+        targetPage: PAGES.validate
       });
     }
   }

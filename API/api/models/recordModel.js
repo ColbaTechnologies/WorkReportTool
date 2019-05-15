@@ -9,6 +9,11 @@ const RecordSchema = new Schema({
   companyId: String,
   createdAt: Date,
   stoppedAt: Date,
+  cDate: String,
+  cTime: String,
+  sDate: String,
+  sTime: String,
+  difference: String,
   status: { type: String, enum: ["accepted", "cancelled", "pending"] }
 });
 

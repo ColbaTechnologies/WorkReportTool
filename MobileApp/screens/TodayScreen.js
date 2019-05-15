@@ -4,7 +4,6 @@ import CompanyService from "../services/companyService";
 import EmployeeService from "../services/employeeService";
 import RecordService from "../services/recordService";
 import moment from "moment";
-import { getDiffTime, prepareRecords } from "../helpers/helpers";
 import { Crono } from "../components/Crono";
 import { RecordList } from "../components/RecordList";
 import { COLORS } from "../constants";
@@ -20,6 +19,7 @@ import {
   Label,
   Input,
   List,
+  Spinner,
   Body,
   Right,
   Left,
@@ -32,24 +32,32 @@ export class TodayScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      records: []
+      records: null
     };
   }
 
   componentDidMount() {
     const employeeId = this.props.navigation.getParam("employeeId", null);
-    console.log(employeeId);
     RecordService.getEmployeeTodayRecords(employeeId)
       .then(records => {
-        records = prepareRecords(records);
         this.setState({ records });
       })
       .catch(e => console.log(e));
   }
 
   render() {
+    if (this.state.records === null) {
+      return <Spinner color={COLORS.darkGreen} />;
+    }
+
     if (this.state.records.length === 0) {
-      return <Container />;
+      return (
+        <Container>
+          <Content padder>
+            <Text>You don't have any records</Text>
+          </Content>
+        </Container>
+      );
     }
     const recordBlock = this.state.records[0];
     return (
