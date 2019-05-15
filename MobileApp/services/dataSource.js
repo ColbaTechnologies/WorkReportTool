@@ -11,9 +11,6 @@ const client = axios.create({
 
 axios.defaults.headers.common["Accept"] = "application/json";
 
-/**
- * Request Wrapper with default success/error actions
- */
 const DataSource = options => {
   const onSuccess = response => {
     console.debug("Request Successful!");

@@ -6,7 +6,8 @@ const mongoose = require("mongoose"),
 exports.get_record_by_employee_id = (req, res) => {
   Record.find({ employeeId: req.params._id }, function(err, record) {
     if (err) res.send(err);
-    res.json(record);
+    const rec = prepareRecords(record);
+    res.json(rec);
   });
 };
 
@@ -24,7 +25,8 @@ exports.get_records_today = (req, res) => {
     },
     function(err, record) {
       if (err) res.send(err);
-      res.json(record);
+      const rec = prepareRecords(record);
+      res.json(rec);
     }
   );
 };
@@ -73,26 +75,74 @@ exports.stop_record = (req, res) => {
 };
 
 exports.validate_records = (req, res) => {
-  let listToUpdate = req.body;
-  let iterationsNeeded = Object.keys(req.body).length;
-  let iterations = 0;
-  Object.entries(req.body).forEach(([key, value]) => {
-    var criteria = {
-      _id: { $in: value }
-    };
+  console.log("dwadwadwadad");
+  var criteria = {
+    employeeId: req.body.employeeId,
+    createdAt: {
+      $gte: moment(req.body.date)
+        .startOf("day")
+        .toDate(),
+      $lte: moment(req.body.date)
+        .endOf("day")
+        .toDate()
+    }
+  };
+  console.log(criteria);
+  Record.updateMany(
+    criteria,
+    { status: req.body.status },
+    { multi: true },
+    function(err, record) {
+      if (err) res.send(err);
+      res.json(record);
+    }
+  );
+};
 
-    Record.update(criteria, { status: key }, { multi: true }, function(
-      err,
-      record
-    ) {
-      if (err) {
-        res.send(err);
-      } else {
-        iterations++;
-        if (iterations === iterationsNeeded) {
-          res.send("ok");
-        }
-      }
+const prepareRecords = records => {
+  let sortedArray = records
+    .sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    })
+    .map(record => {
+      let created = moment(record.createdAt);
+      let stopped = moment(record.stoppedAt);
+      record.cDate = created.format("DD/MM/YY");
+      record.cTime = created.format("hh:mm:ss");
+      record.sDate = stopped.format("DD/MM/YY");
+      record.sTime = stopped.format("hh:mm:ss");
+      record.difference = getDiffTime(created, stopped);
+      return record;
     });
+  let recordsGrouped = groupBy(sortedArray, "cDate");
+  let recordsFinal = [];
+  Object.keys(recordsGrouped).map(day => {
+    let data = { day: day, records: recordsGrouped[day], total: 0 };
+    recordsGrouped[day].map(item => {
+      data.total += moment.duration(item.difference).asSeconds();
+    });
+    data.total = moment(data.total)
+      .startOf("day")
+      .seconds(data.total)
+      .format("HH:mm:ss");
+    recordsFinal.push(data);
   });
+
+  return recordsFinal;
+};
+
+const groupBy = (xs, key) => {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+const getDiffTime = (creationDate, evaluableDate) => {
+  var totalSec = evaluableDate.diff(creationDate, "seconds");
+  let result = moment()
+    .startOf("day")
+    .seconds(totalSec)
+    .format("HH:mm:ss");
+
+  return result;
 };

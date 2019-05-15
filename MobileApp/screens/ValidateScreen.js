@@ -34,10 +34,7 @@ export class ValidateScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      records: {},
-      cancelled: [],
-      accepted: [],
-      originalRecords: []
+      records: []
     };
   }
 
@@ -45,35 +42,26 @@ export class ValidateScreen extends React.Component {
     const companyId = this.props.navigation.getParam("companyId", null);
     RecordService.getPendingRecordsByCompany(companyId)
       .then(records => {
-        let cookedRecords = prepareRecordsForValidate(records);
-        this.setState({ records: cookedRecords, originalRecords: records });
+        records = prepareRecordsForValidate(records);
+        this.setState({ records: records });
       })
-      .catch(e => console.log(e));
+      .catch(e => console.log("dadwdawdwa"));
   }
 
-  changeStatus = (status, id) => {
-    let { accepted, cancelled } = this.state;
-    accepted = accepted.filter(item => item !== id);
-    cancelled = cancelled.filter(item => item !== id);
-    if (status === "cancelled") {
-      cancelled.push(id);
-    } else {
-      accepted.push(id);
-    }
-
-    this.setState({
-      accepted,
-      cancelled
-    });
-  };
-
-  onSubmit = () => {
-    let { accepted, cancelled, originalRecords, records } = this.state;
+  changeStatus = (status, firstRegister) => {
     let data = {
-      accepted: [],
-      cancelled: []
+      date: firstRegister.createdAt,
+      employeeId: firstRegister.employeeId,
+      status
     };
-    console.log(records);
+    let day = moment(firstRegister.createdAt).format("DD/MM/YY");
+    let newRecords = { ...this.state.records };
+    newRecords[day] = newRecords[day].filter(
+      item => item.firstRegister._id !== firstRegister._id
+    );
+    RecordService.validatePending(data).then(updated => {
+      this.setState({ records: newRecords });
+    });
   };
 
   render() {
@@ -91,23 +79,14 @@ export class ValidateScreen extends React.Component {
                   <Text>{day}</Text>
                 </ListItem>
                 {this.state.records[day].map(register => (
-                  <ListItem key={register.id}>
+                  <ListItem key={register.firstRegister._id}>
                     <Button
                       onPress={() =>
-                        this.changeStatus("cancelled", register.id)
+                        this.changeStatus("cancelled", register.firstRegister)
                       }
                       rounded
-                      disabled={
-                        this.state.cancelled.includes(register.id)
-                          ? true
-                          : false
-                      }
                       style={{
-                        backgroundColor: this.state.cancelled.includes(
-                          register.id
-                        )
-                          ? COLORS.orange
-                          : COLORS.lightBlue
+                        backgroundColor: COLORS.orange
                       }}
                     >
                       <Icon
@@ -144,16 +123,11 @@ export class ValidateScreen extends React.Component {
                     </Body>
                     <Button
                       rounded
-                      disabled={
-                        this.state.accepted.includes(register.id) ? true : false
+                      onPress={() =>
+                        this.changeStatus("accepted", register.firstRegister)
                       }
-                      onPress={() => this.changeStatus("accepted", register.id)}
                       style={{
-                        backgroundColor: this.state.accepted.includes(
-                          register.id
-                        )
-                          ? COLORS.lightGreen
-                          : COLORS.lightBlue,
+                        backgroundColor: COLORS.lightGreen,
                         width: 50,
                         height: 50
                       }}
@@ -170,17 +144,6 @@ export class ValidateScreen extends React.Component {
               </View>
             ))}
           </List>
-          <Button
-            block
-            style={{
-              height: 60,
-              width: width,
-              backgroundColor: COLORS.lightGreen
-            }}
-            onPress={() => this.onSubmit()}
-          >
-            <Text>Validate</Text>
-          </Button>
         </Content>
       </Container>
     );

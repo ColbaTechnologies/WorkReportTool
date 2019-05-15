@@ -6,8 +6,19 @@ const { width, height } = Dimensions.get("window");
 
 export default class SplashScreen extends Component {
   static navigationOptions = {
-    title: "Please sign in"
+    header: null
   };
+
+  async componentDidMount() {
+    if (this.props.screenProps && this.props.screenProps.targetScreen) {
+      let { employee, company, targetScreen } = this.props.screenProps;
+      console.log(targetScreen);
+      this.props.navigation.navigate(targetScreen, {
+        employee,
+        company
+      });
+    }
+  }
 
   render() {
     return (

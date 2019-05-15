@@ -31,6 +31,7 @@ export class CreateCompanyScreen extends React.Component {
   onSubmit = () => {
     const callback = () =>
       CompanyService.createNew(this.state.data).then(result => {
+        this.props.screenProps.setCompanyId(result._id);
         this.props.navigation.navigate(PAGES.newEmployee, {
           companyId: result._id,
           isAdmin: true

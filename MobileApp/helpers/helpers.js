@@ -90,7 +90,7 @@ export const prepareRecordsForValidate = records => {
 
       let data = {
         day,
-        id: firstRegister._id,
+        firstRegister,
         employeeId: employee,
         employeeName: firstRegister.employeeName,
         start: moment(firstRegister.createdAt).format("HH:mm:ss"),

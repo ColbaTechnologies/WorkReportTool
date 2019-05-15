@@ -5,10 +5,12 @@ import { HomeScreen } from "../screens/HomeScreen";
 import { TodayScreen } from "../screens/TodayScreen";
 import { RecordsScreen } from "../screens/RecordsScreen";
 import { ValidateScreen } from "../screens/ValidateScreen";
-import Amplify from "aws-amplify";
-import awsmobile from "../aws-exports";
-import { withAuthenticator } from "aws-amplify-react-native";
-Amplify.configure(awsmobile);
+import { DecisionScreen } from "../screens/DecisionScreen";
+import { CreateCompanyScreen } from "../screens/CreateCompanyScreen";
+import { JoinScreen } from "../screens/JoinScreen";
+import { CreateEmployeeScreen } from "../screens/CreateEmployeeScreen";
+import SplashScreen from "../screens/SplashScreen";
+
 const navigationOptions = {
   headerStyle: {
     backgroundColor: COLORS.darkGreen
@@ -19,12 +21,42 @@ const navigationOptions = {
   }
 };
 
-const AppNavigation = createAppContainer(
+export const AppNavigation = createAppContainer(
   createStackNavigator({
+    Splash: { screen: SplashScreen },
+    Decision: {
+      screen: DecisionScreen,
+      navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
+        title: "Work Check-in"
+      })
+    },
+    NewCompany: {
+      screen: CreateCompanyScreen,
+      navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
+        title: "Create Company"
+      })
+    },
+    NewEmployee: {
+      screen: CreateEmployeeScreen,
+      navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
+        title: "Create Profile"
+      })
+    },
+    Join: {
+      screen: JoinScreen,
+      navigationOptions: ({ navigation }) => ({
+        ...navigationOptions,
+        title: "Join on a company"
+      })
+    },
     Home: {
       screen: HomeScreen,
       navigationOptions: ({ navigation }) => ({
         ...navigationOptions,
+        headerLeft: null,
         title: "Work Check In"
       })
     },
@@ -51,11 +83,3 @@ const AppNavigation = createAppContainer(
     }
   })
 );
-
-class AppNavigationAuth extends React.Component {
-  render() {
-    return <AppNavigation {...this.props} />;
-  }
-}
-
-export default withAuthenticator(AppNavigationAuth, false);

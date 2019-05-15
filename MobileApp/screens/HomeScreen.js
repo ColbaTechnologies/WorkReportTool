@@ -35,9 +35,9 @@ export class HomeScreen extends Component {
     this.props.navigation.se;
   }
   componentDidMount() {
-    console.log(process.env);
-    const { employeeId } = this.props.screenProps;
-    RecordService.getCurrent(employeeId)
+    const { employee, company } = this.props.screenProps;
+    this.setState({ employee, company });
+    RecordService.getCurrent(employee._id)
       .then(records => {
         if (records.length > 0) {
           this.setState({ record: records[0] });
@@ -47,16 +47,6 @@ export class HomeScreen extends Component {
         }
       })
       .catch(err => console.log(err));
-    EmployeeService.getById(employeeId).then(employee => {
-      this.setState({ employee: employee[0] }, () => {
-        let { employee } = this.state;
-        CompanyService.getById(employee.companyId)
-          .then(company => {
-            this.setState({ company: company[0], isReady: true });
-          })
-          .catch(err => console.log(err));
-      });
-    });
   }
 
   startRecord = () => {
@@ -65,9 +55,10 @@ export class HomeScreen extends Component {
       employeeName: this.state.employee.name,
       companyId: this.state.employee.companyId
     };
+
     RecordService.createNew(data).then(record => {
-      this.setState({ record });
       this.startCrono();
+      this.setState({ record });
     });
   };
 
@@ -92,9 +83,6 @@ export class HomeScreen extends Component {
   };
 
   render() {
-    if (!this.state.isReady) {
-      return <Container />;
-    }
     let buttons = [];
     if (this.state.employee) {
       buttons = getButtons(PAGES.home, this.state.employee);

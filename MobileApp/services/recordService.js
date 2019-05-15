@@ -66,7 +66,8 @@ const RecordService = {
   stop,
   getEmployeeRecords,
   getEmployeeTodayRecords,
-  getPendingRecordsByCompany
+  getPendingRecordsByCompany,
+  validatePending
 };
 
 export default RecordService;
