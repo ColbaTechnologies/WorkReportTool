@@ -32,7 +32,6 @@ export class HomeScreen extends Component {
       diff: null,
       isReady: false
     };
-    this.props.navigation.se;
   }
   componentDidMount() {
     const { employee, company } = this.props.screenProps;

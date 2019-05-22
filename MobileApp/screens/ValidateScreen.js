@@ -40,12 +40,10 @@ export class ValidateScreen extends React.Component {
 
   componentDidMount() {
     const companyId = this.props.navigation.getParam("companyId", null);
-    RecordService.getPendingRecordsByCompany(companyId)
-      .then(records => {
-        records = prepareRecordsForValidate(records);
-        this.setState({ records: records });
-      })
-      .catch(e => console.log("dadwdawdwa"));
+    RecordService.getPendingRecordsByCompany(companyId).then(records => {
+      records = prepareRecordsForValidate(records);
+      this.setState({ records: records });
+    });
   }
 
   changeStatus = (status, firstRegister) => {

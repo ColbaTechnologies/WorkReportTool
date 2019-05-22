@@ -12,7 +12,6 @@ export default class SplashScreen extends Component {
   async componentDidMount() {
     if (this.props.screenProps && this.props.screenProps.targetScreen) {
       let { employee, company, targetScreen } = this.props.screenProps;
-      console.log(targetScreen);
       this.props.navigation.navigate(targetScreen, {
         employee,
         company

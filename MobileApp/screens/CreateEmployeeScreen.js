@@ -47,7 +47,7 @@ export class CreateEmployeeScreen extends React.Component {
   onSubmit = () => {
     const callback = () =>
       EmployeeService.createNew(this.state.data).then(result => {
-        this.props.screenProps.setWorkerId(result);
+        this.props.screenProps.setWorker(result);
         this.props.navigation.navigate(PAGES.home);
       });
     const fallback = errors => {

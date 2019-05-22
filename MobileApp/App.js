@@ -51,11 +51,11 @@ class App extends Component {
     }
   }
 
-  setWorkerId = employee => {
+  setWorker = employee => {
     this.setState({ employee });
   };
 
-  setCompanyId = company => {
+  setCompany = company => {
     this.setState({ company });
   };
   render() {
@@ -63,8 +63,8 @@ class App extends Component {
       employee: this.state.employee,
       company: this.state.company,
       targetScreen: this.state.targetScreen,
-      setWorkerId: workerId => this.setWorkerId(workerId),
-      setCompanyId: companyId => this.setCompanyId(companyId)
+      setWorker: worker => this.setWorker(worker),
+      setCompany: company => this.setCompany(company)
     };
     if (!this.state.isReady) {
       return <SplashScreen />;
