@@ -28,7 +28,9 @@ class App extends Component {
 
   async componentDidMount() {
     await (await Auth.currentCredentials()).getPromise(); // Wait for credentials
+
     const info = await Auth.currentUserInfo();
+
     if (info.username) {
       EmployeeService.getByUserName(info.username).then(employee => {
         if (employee.length !== 0) {

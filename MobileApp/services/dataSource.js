@@ -6,7 +6,7 @@ import { API_URL } from "react-native-dotenv";
  * Create an Axios Client with defaults
  */
 const client = axios.create({
-  baseURL: "http://192.168.0.18:5000"
+  baseURL: "http://192.168.0.18:5000/api"
 });
 
 axios.defaults.headers.common["Accept"] = "application/json";

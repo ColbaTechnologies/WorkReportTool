@@ -5,6 +5,7 @@ module.exports = function(app) {
   const record = require("../controllers/recordController");
 
   //Company routes
+
   app.route("/company").post(company.create_a_company);
   app.route("/company/:_id").get(company.find_company_by_id);
   app.route("/company/code/:code").get(company.find_company_by_code);
